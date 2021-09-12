@@ -10,5 +10,6 @@ class InputParser:
         pass
 
     def readcsvFiles(files):
+        print('Gimme csv')
         pass
 

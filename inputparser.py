@@ -6,7 +6,9 @@ class InputParser:
         print('Hello World')
 
     def promptData(self):
+        print('Give me data please')
         pass
 
     def readcsvFiles(files):
         pass
+

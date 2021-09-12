@@ -1,6 +1,6 @@
 import os
 import xlsxwriter
-from inputparser import InputParser
+
 from datetime import datetime
 from Module import Module
 from Moduleoffering import Moduleoffering

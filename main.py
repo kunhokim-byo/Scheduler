@@ -773,10 +773,6 @@ if __name__ == "__main__":
         'DICT-DNDFC': 'Diploma in InfoComm Technology & Diploma in Network Defense and Forensic Countermeasures'
     }
 
-    ip = InputParser()
-    ip.start()
-
-
     print("1 Student/Lecturer")
     print("2 Scheduler Admin")
     usertype = int(input("Select user type:"))

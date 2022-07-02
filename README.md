@@ -16,3 +16,4 @@ Once the raw data is loaded and processed, the program will allow user to list d
 
 When listing the schedule, the application must display information such as the module name, the date, the start time, end time, venue, and the lecturer name. The program should ensure valid input are provided. The program should respond with appropriate error message if user supplied invalid input. For best usability and prevent input error, it is always recommended to provide user list of options rather than requesting user to type in exact value for their selection.
 
+![schedulerscreenshot2](https://user-images.githubusercontent.com/65008246/176989738-81ab1f66-1fd7-4248-b365-f3b795dca439.png)

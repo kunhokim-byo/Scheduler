@@ -360,9 +360,12 @@ def deleteSchedule(fields):
                 if str(schedule.getDate()) == str(fields[2]) and schedule.getStartTime() == fields[
                     3] and schedule.getLecturerName() == fields[4]:
                     moo.delteSchedule(schedule)
-                    print("Schedule is deleted")
+                    print("Schedule is deleted successfully")
                     print("Deleted Schedule Detail: ", schedule)
-                    print(moo.getSchedules())
+                    print("*")
+                    for i in moo.getSchedules():
+                        print(i)
+                    print("*")
                     return
     print("Invalid schedule")
 
@@ -426,41 +429,40 @@ def updateSchedule(update):
                     if user == 1:
                         user3 = input("Type the date to replace: ").strip()
                         s.setDate(user3)
-                        print("Changed Successfully")
+                        # for checking whether the schedule is really changed or not.For checking from this, I have to change first schedule of csv file.
+                        print("Changed Successfully: {}".format(moo.getSchedules()[0]))
                     elif user == 2:
                         user3 = input("Type the Day to replace: ").strip()
                         s.setDay(user3)
-                        print("Changed Successfully")
+                        print("Changed Successfully: {}".format(moo.getSchedules()[0]))
                     elif user == 3:
                         user3 = input("Type the start time to replace: ").strip()
                         s.setStartTime(user3)
-                        print("Changed Successfully")
+                        print("Changed Successfully: {}".format(moo.getSchedules()[0]))
                     elif user == 4:
                         user3 = input("Type the end time to replace: ").strip()
                         s.setEndTime(user3)
-                        print("Changed Successfully")
+                        print("Changed Successfully: {}".format(moo.getSchedules()[0]))
                     elif user == 5:
                         user3 = input("Type the duration to replace: ").strip()
                         s.setDuration(user3)
-                        print("Changed Successfully")
+                        print("Changed Successfully: {}".format(moo.getSchedules()[0]))
                     elif user == 6:
                         user3 = input("Type the room to replace: ").strip()
                         s.getLocation().setRoom(user3)
-                        print("Changed Successfully")
+                        print("Changed Successfully: {}".format(moo.getSchedules()[0]))
                     elif user == 7:
                         user3 = input("Type the zone to replace: ").strip()
                         s.getLocation().setZone(user3)
-                        print("Changed Successfully")
+                        print("Changed Successfully: {}".format(moo.getSchedules()[0]))
                     elif user == 8:
                         user3 = input("Type the lecturer name to replace: ").strip()
                         s.setLecturerName(user3)
-                        print("Changed Successfully")
+                        print("Changed Successfully: {}".format(moo.getSchedules()[0]))
                     elif user == 9:
                         user3 = input("Type the plan size to replace: ").strip()
                         s.setPlanSize(user3)
-                        print("Changed Successfully")
-
-                    # print(moo.getSchedules()[0]) -> use it for checking whether the schedule is really changed or not. For checking from this, I have to change first schedule of csv file.
+                        print("Changed Successfully: {}".format(moo.getSchedules()[0]))
                     return
     print('No matching schedule is identified!')
 
@@ -926,6 +928,7 @@ def promptListingOption():
     while select not in [i for i in range(1, 4)]:
         select = int(input("Invalid input. Select the task again: "))
     return select
+
 def performListAllSchedule():
     oo = listAllSchedule()
     o = []  # [moo1,s1] , [moo1, s2], [moo1, s3] ...[moo2, s1], [moo2, s2] ...
@@ -1077,7 +1080,40 @@ def promptRepeatingSearch(o):
             break
     return o
 
+def promptAdminTasksOption():
+    print("1 Change Existing Schedule")
+    print("2 Delete Schedule Data")
+    print("3 Add new Schedule Data")
+    a = int(input("select the task: "))
+    while a not in [i for i in range(1, 4)]:
+        a = int(input("Invalid input. Select the task again: "))
+    return a
 
+def performUpdateSchedule():
+    updates = ['Intake Code', 'Module Code', 'Study Mode', 'Program Code']
+    userinput = []
+    for update in updates:
+        a = input("Type " + update + ":").strip()
+        userinput.append(a)  # user input from updates list will be append to userinput list
+    updateSchedule(userinput)
+
+def performDeleteSchedule():
+    fields = ['Module Code', 'Intake Code', 'Date', 'StartTime(hhmm)', 'Lecturer']
+    userinput = []
+    for field in fields:
+        f = input("Type the " + field + ":").strip()
+        userinput.append(f)
+    # userinput example = ['DCNG', '221', '29/04/2021', '1200', 'Dr Liau Vui Kien']
+    deleteSchedule(userinput)
+
+def performInsertSchedule():
+    attributes = ['Intake Code', 'Module Code', 'Study Mode', 'Program Code', 'Date', 'Day', 'Start Time',
+                  'End Time', 'Plan Size', 'Duration', 'Lecturer', 'zone', 'room']
+    userinput = []
+    for attribute in attributes:
+        a = input("Type " + attribute + ":").strip()
+        userinput.append(a)
+    createSchedule(userinput)
 
 if __name__ == "__main__":
     program_mapper = {
@@ -1148,34 +1184,16 @@ if __name__ == "__main__":
     # admin functions start.
 
     else:
-        print("1 Change Existing Schedule")
-        print("2 Delete Schedule Data")
-        print("3 Add new Schedule Data")
-        a = int(input("select the task: "))
-        while a not in [i for i in range(1, 4)]:
-            a = int(input("Invalid input. Select the task again: "))
-        if a == 1:
-            updates = ['Intake Code', 'Module Code', 'Study Mode', 'Program Code']
-            userinput = []
-            for update in updates:
-                a = input("Type " + update + ":").strip()
-                userinput.append(a)  # user input from updates list will be append to userinput list
-            updateSchedule(userinput)
-        elif a == 2:
-            fields = ['Module Code', 'Intake Code', 'Date', 'StartTime(hhmm)', 'Lecturer']
-            userinput = []
-            for field in fields:
-                f = input("Type the " + field + ":").strip()
-                userinput.append(f)
-            # userinput example = ['DCNG', '221', '29/04/2021', '1200', 'Dr Liau Vui Kien']
-            deleteSchedule(userinput)
+        a = promptAdminTasksOption()
 
+        if a == 1:
+
+            performUpdateSchedule()
+
+        elif a == 2:
+
+            performDeleteSchedule()
 
         elif a == 3:
-            attributes = ['Intake Code', 'Module Code', 'Study Mode', 'Program Code', 'Date', 'Day', 'Start Time',
-                          'End Time', 'Plan Size', 'Duration', 'Lecturer', 'zone', 'room']
-            userinput = []
-            for attribute in attributes:
-                a = input("Type " + attribute + ":").strip()
-                userinput.append(a)
-            createSchedule(userinput)
+
+            performInsertSchedule()

@@ -962,6 +962,34 @@ def performSearchByModule():
     o = promptRepeatingSearch(o)
     return o
 
+def performSearchByLecturer():
+    type_lecturer = input("Type the lecturer:").strip()
+    o = listByLecturer(type_lecturer)
+    while o == {}:
+        print("No Schedule Matched")
+        redo = int(input("Input 1 to re-enter lecturer, 0 to exit: "))
+        if redo == 1:
+            type_lecturer = input("Type the lecturer: ").strip()
+            o = listByLecturer(type_lecturer)
+        else:
+            exit()
+    o = promptRepeatingSearch(o)
+    return o
+
+def performSearchByZone():
+    type_zone = input("Type the zone: ").strip()
+    o = listByLocation(type_zone)
+    while o == {}:
+        print("No Schedule Matched")
+        redo = int(input("Input 1 to re-enter zone, 0 to exit: "))
+        if redo == 1:
+            type_zone = input("Type the zone: ").strip()
+            o = listByLocation(type_zone)
+        else:
+            exit()
+    o = promptRepeatingSearch(o)
+    return o
+
 def promptRepeatingSearch(o):
     while True:
         a = int(input("Do you want to filter another time(0: NO / 1: YES)? "))
@@ -998,42 +1026,13 @@ if __name__ == "__main__":
                 o = performSearchByModule()
 
             elif criteria == 2:
-                type_lecturer = input("Type the lecturer:").strip()
-                o = listByLecturer(type_lecturer)
-                while o == {}:
-                    print("No Schedule Matched")
-                    redo = int(input("Input 1 to re-enter lecturer, 0 to exit: "))
-                    if redo == 1:
-                        type_lecturer = input("Type the lecturer: ").strip()
-                        o = listByLecturer(type_lecturer)
-                    else:
-                        exit()
 
-                while True:
-                    # print("do you want to filter another time? ")
-                    a = int(input("Do you want to filter another time(0: NO / 1: YES)? "))
-                    if a == 1:
-                        o = repeatedFilter(o)
-                    elif a == 0:
-                        break
+                o = performSearchByLecturer()
+
             elif criteria == 3:
-                type_zone = input("Type the zone: ").strip()
-                o = listByLocation(type_zone)
-                while o == {}:
-                    print("No Schedule Matched")
-                    redo = int(input("Input 1 to re-enter zone, 0 to exit: "))
-                    if redo == 1:
-                        type_zone = input("Type the zone: ").strip()
-                        o = listByLocation(type_zone)
-                    else:
-                        exit()
-                while True:
-                    # print("do you want to filter another time? ")
-                    a = int(input("Do you want to filter another time(0: NO / 1: YES)? "))
-                    if a == 1:
-                        o = repeatedFilter(o)
-                    else:
-                        break
+
+                o = performSearchByZone()
+
             elif criteria == 4:
                 type_date = input("type the date(dd/m/year): ").strip()
                 o = listByDate(type_date)

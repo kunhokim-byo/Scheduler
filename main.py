@@ -947,6 +947,31 @@ def promptSearchCriteria():
     while criteria not in [i for i in range(1, 9)]:
         criteria = int(input("Invalid input. Select the criteria again: "))
     return criteria
+
+def performSearchByModule():
+    type_module = input("Type the module code: ").strip()
+    o = listByModule(type_module)
+    while o == {}:  # This is the case that user type the invalid input so that nothing inside of dictionary
+        print("No Schedule Matched")
+        redo = int(input("Input 1 to re-enter module code, 0 to exit: "))
+        if redo == 1:
+            type_module = input("Type the module: ").strip()
+            o = listByModule(type_module)
+        else:  # if user does not type 1
+            exit()
+    o = promptRepeatingSearch(o)
+    return o
+
+def promptRepeatingSearch(o):
+    while True:
+        a = int(input("Do you want to filter another time(0: NO / 1: YES)? "))
+        while a not in [i for i in range(0, 2)]:
+            a = int(input("Invalid Input. Type again: "))
+        if a == 1:
+            o = repeatedFilter(o)
+        elif a == 0:
+            break
+    return o
 if __name__ == "__main__":
     program_mapper = {
         'DICT-DNDFC': 'Diploma in InfoComm Technology & Diploma in Network Defense and Forensic Countermeasures'
@@ -957,31 +982,20 @@ if __name__ == "__main__":
     findAndProcessData()
 
     if usertype == 1:
+
         select = promptListingOption()
+
         if select == 1:
+
             o = performListAllSchedule()
 
         elif select == 2:
+
             criteria = promptSearchCriteria()
+
             if criteria == 1:
-                type_module = input("Type the module code: ").strip()
-                o = listByModule(type_module)
-                while o == {}:  # This is the case that user type the invalid input so that nothing inside of dictionary
-                    print("No Schedule Matched")
-                    redo = int(input("Input 1 to re-enter module code, 0 to exit: "))
-                    if redo == 1:
-                        type_module = input("Type the module: ").strip()
-                        o = listByModule(type_module)
-                    else:  # if user does not type 1
-                        exit()
-                while True:
-                    a = int(input("Do you want to filter another time(0: NO / 1: YES)? "))
-                    while a not in [i for i in range(0, 2)]:
-                        a = int(input("Invalid Input. Type again: "))
-                    if a == 1:
-                        o = repeatedFilter(o)
-                    elif a == 0:
-                        break
+
+                o = performSearchByModule()
 
             elif criteria == 2:
                 type_lecturer = input("Type the lecturer:").strip()

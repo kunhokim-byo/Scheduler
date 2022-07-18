@@ -918,6 +918,35 @@ def findAndProcessData():
                 if moo.getIntakeCode() == intake_code and moo.getModule().getModuleCode() == module_code and moo.getStudyMode() == study_mode:  # don't have to check if it's exist with same reason in schedule object
                     moo.addSchedule(s)
         f.close()
+def promptListingOption():
+    print("1 List All Schedules")
+    print("2 List Schedule By Criteria")
+    print("3 List All Modules & Lecturers")
+    select = int(input("Select the task: "))
+    while select not in [i for i in range(1, 4)]:
+        select = int(input("Invalid input. Select the task again: "))
+    return select
+def performListAllSchedule():
+    oo = listAllSchedule()
+    o = []  # [moo1,s1] , [moo1, s2], [moo1, s3] ...[moo2, s1], [moo2, s2] ...
+    for moo, ss in oo.items():
+        for s in ss:
+            o.append([moo, s])
+    return o
+
+def promptSearchCriteria():
+    print("1 List By Module")
+    print("2 List By Lecturer")
+    print("3 List By Location")
+    print("4 List By Date")
+    print("5 List By Date Range")
+    print("6 List By Time Range")
+    print("7 List By Day")
+    print("8 List By Room")
+    criteria = int(input("Select the criteria: "))
+    while criteria not in [i for i in range(1, 9)]:
+        criteria = int(input("Invalid input. Select the criteria again: "))
+    return criteria
 if __name__ == "__main__":
     program_mapper = {
         'DICT-DNDFC': 'Diploma in InfoComm Technology & Diploma in Network Defense and Forensic Countermeasures'
@@ -928,30 +957,12 @@ if __name__ == "__main__":
     findAndProcessData()
 
     if usertype == 1:
-        print("1 List All Schedules")
-        print("2 List Schedule By Criteria")
-        print("3 List All Modules & Lecturers")
-        select = int(input("Select the task: "))
-        while select not in [i for i in range(1, 4)]:
-            select = int(input("Invalid input. Select the task again: "))
+        select = promptListingOption()
         if select == 1:
-            oo = listAllSchedule()
-            o = []  # [moo1,s1] , [moo1, s2], [moo1, s3] ...[moo2, s1], [moo2, s2] ...
-            for moo, ss in oo.items():
-                for s in ss:
-                    o.append([moo, s])
+            o = performListAllSchedule()
+
         elif select == 2:
-            print("1 List By Module")
-            print("2 List By Lecturer")
-            print("3 List By Location")
-            print("4 List By Date")
-            print("5 List By Date Range")
-            print("6 List By Time Range")
-            print("7 List By Day")
-            print("8 List By Room")
-            criteria = int(input("Select the criteria: "))
-            while criteria not in [i for i in range(1, 9)]:
-                criteria = int(input("Invalid input. Select the criteria again: "))
+            criteria = promptSearchCriteria()
             if criteria == 1:
                 type_module = input("Type the module code: ").strip()
                 o = listByModule(type_module)

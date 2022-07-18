@@ -817,21 +817,15 @@ def exportExcel(data):
 
     workbook.close()
 
-
-
-if __name__ == "__main__":
-    program_mapper = {
-        'DICT-DNDFC': 'Diploma in InfoComm Technology & Diploma in Network Defense and Forensic Countermeasures'
-    }
-
+def selectUser():
     print("1 Student/Lecturer")
     print("2 Scheduler Admin")
     usertype = int(input("Select user type:"))
     while usertype != 1 and usertype != 2:
         usertype = int(input("Invalid input. Select user type again: "))
+    return usertype
 
-    # Read and process data
-    # Get Current Directory
+def findAndProcessData():
     cwd = os.getcwd()
     while True:
         folder = input("Type the folder:").strip()
@@ -839,7 +833,6 @@ if __name__ == "__main__":
         if os.path.exists(fullPath):
             break
         print("Wrong folder. Type again:")
-
     for file in os.listdir(fullPath):
         f = open(os.path.join(os.getcwd(), folder, file))
         isFirstLine = True
@@ -925,6 +918,14 @@ if __name__ == "__main__":
                 if moo.getIntakeCode() == intake_code and moo.getModule().getModuleCode() == module_code and moo.getStudyMode() == study_mode:  # don't have to check if it's exist with same reason in schedule object
                     moo.addSchedule(s)
         f.close()
+if __name__ == "__main__":
+    program_mapper = {
+        'DICT-DNDFC': 'Diploma in InfoComm Technology & Diploma in Network Defense and Forensic Countermeasures'
+    }
+
+    usertype = selectUser()
+
+    findAndProcessData()
 
     if usertype == 1:
         print("1 List All Schedules")

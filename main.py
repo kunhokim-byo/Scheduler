@@ -990,6 +990,82 @@ def performSearchByZone():
     o = promptRepeatingSearch(o)
     return o
 
+def performSearchByDate():
+    type_date = input("type the date(dd/m/year): ").strip()
+    o = listByDate(type_date)
+    while o == {}:
+        print("No Schedule Matched")
+        redo = int(input("Input 1 to re-enter date, 0 to exit: "))
+        if redo == 1:
+            type_date = input("Type the date: ").strip()
+            o = listByDate(type_date)
+        else:
+            exit()
+    o = promptRepeatingSearch(o)
+    return o
+
+def performSearchByDateRange():
+    type_drange1 = input("Type the start date(dd/m/year): ").strip()
+    type_drange2 = input("Type the end date(dd/m/year): ").strip()
+    o = listByDateRange(type_drange1, type_drange2)
+    while o == {}:
+        print("No Schedule Matched")
+        redo = int(input("Input 1 to re-enter date range, 0 to exit: "))
+        if redo == 1:
+            type_drange1 = input("Type the start date(dd/m/year): ").strip()
+            type_drange2 = input("Type the end date(dd/m/year): ").strip()
+            o = listByDateRange(type_drange1, type_drange2)
+        else:
+            exit()
+    o = promptRepeatingSearch(o)
+    return o
+
+def performSearchByTimeRange():
+    type_trange1 = input("Type the start time(type in 4 digits / e.g. 2pm = 1400 8am = 0800): ").strip()
+    type_trange2 = input("Type the end time(type in 4 digits / e.g. 2pm = 1400 8am = 0800): ").strip()
+    o = listByTimeRange(type_trange1, type_trange2)
+    while o == {}:
+        print("No Schedule Matched")
+        redo = int(input("Input 1 to re-enter time range, 0 to exit: "))
+        if redo == 1:
+            type_trange1 = input(
+                "Type the start time(type in 4 digits / e.g. 2pm = 1400 8am = 0800): ").strip()
+            type_trange2 = input(
+                "Type the end time(type in 4 digits / e.g. 2pm = 1400 8am = 0800): ").strip()
+            o = listByTimeRange(type_trange1, type_trange2)
+        else:
+            exit()
+    o = promptRepeatingSearch(o)
+    return o
+
+def performSearchByDay():
+    type_day = input("Type the day(Mon/Tue/Wed/Thu/Fri/Sat/Sun): ")
+    o = listByDay(type_day)
+    while o == {}:
+        print("No Schedule Matched")
+        redo = int(input("Input 1 to re-enter day, 0 to exit: "))
+        if redo == 1:
+            type_day = input("Type the day: ").strip()
+            o = listByDay(type_day)
+        else:
+            exit()
+    o = promptRepeatingSearch(o)
+    return o
+
+def performSearchByRoom():
+    type_room = input("Type the room: ").strip()
+    o = listByRoom(type_room)
+    while o == {}:
+        print("No Schedule Matched")
+        redo = int(input("Input 1 to re-enter room, 0 to exit: "))
+        if redo == 1:
+            type_room = input("Type the room: ").strip()
+            o = listByRoom(type_room)
+        else:
+            exit()
+    o = promptRepeatingSearch(o)
+    return o
+
 def promptRepeatingSearch(o):
     while True:
         a = int(input("Do you want to filter another time(0: NO / 1: YES)? "))
@@ -1000,6 +1076,9 @@ def promptRepeatingSearch(o):
         elif a == 0:
             break
     return o
+
+
+
 if __name__ == "__main__":
     program_mapper = {
         'DICT-DNDFC': 'Diploma in InfoComm Technology & Diploma in Network Defense and Forensic Countermeasures'
@@ -1034,100 +1113,24 @@ if __name__ == "__main__":
                 o = performSearchByZone()
 
             elif criteria == 4:
-                type_date = input("type the date(dd/m/year): ").strip()
-                o = listByDate(type_date)
-                while o == {}:
-                    print("No Schedule Matched")
-                    redo = int(input("Input 1 to re-enter date, 0 to exit: "))
-                    if redo == 1:
-                        type_date = input("Type the date: ").strip()
-                        o = listByDate(type_date)
-                    else:
-                        exit()
-                while True:
-                    a = int(input("Do you want to filter another time(0: NO / 1: YES)? "))
-                    if a == 1:
-                        o = repeatedFilter(o)
-                    else:
-                        break
+
+                o = performSearchByDate()
 
             elif criteria == 5:
-                type_drange1 = input("Type the start date(dd/m/year): ").strip()
-                type_drange2 = input("Type the end date(dd/m/year): ").strip()
-                o = listByDateRange(type_drange1, type_drange2)
-                while o == {}:
-                    print("No Schedule Matched")
-                    redo = int(input("Input 1 to re-enter date range, 0 to exit: "))
-                    if redo == 1:
-                        type_drange1 = input("Type the start date(dd/m/year): ").strip()
-                        type_drange2 = input("Type the end date(dd/m/year): ").strip()
-                        o = listByDateRange(type_drange1, type_drange2)
-                    else:
-                        exit()
-                while True:
-                    a = int(input("Do you want to filter another (0: NO / 1: YES)? "))
-                    if a == 1:
-                        o = repeatedFilter(o)
-                    else:
-                        break
+
+                o = performSearchByDateRange()
 
             elif criteria == 6:
-                type_trange1 = input("Type the start time(type in 4 digits / e.g. 2pm = 1400 8am = 0800): ").strip()
-                type_trange2 = input("Type the end time(type in 4 digits / e.g. 2pm = 1400 8am = 0800): ").strip()
-                o = listByTimeRange(type_trange1, type_trange2)
-                while o == {}:
-                    print("No Schedule Matched")
-                    redo = int(input("Input 1 to re-enter time range, 0 to exit: "))
-                    if redo == 1:
-                        type_trange1 = input(
-                            "Type the start time(type in 4 digits / e.g. 2pm = 1400 8am = 0800): ").strip()
-                        type_trange2 = input(
-                            "Type the end time(type in 4 digits / e.g. 2pm = 1400 8am = 0800): ").strip()
-                        o = listByTimeRange(type_trange1, type_trange2)
-                    else:
-                        exit()
-                while True:
-                    a = int(input("Do you want to filter another time(0: NO / 1: YES)? "))
-                    if a == 1:
-                        o = repeatedFilter(o)
-                    else:
-                        break
+
+                o = performSearchByTimeRange()
 
             elif criteria == 7:
-                type_day = input("Type the day(Mon/Tue/Wed/Thu/Fri/Sat/Sun): ")
-                o = listByDay(type_day)
-                while o == {}:
-                    print("No Schedule Matched")
-                    redo = int(input("Input 1 to re-enter day, 0 to exit: "))
-                    if redo == 1:
-                        type_day = input("Type the day: ").strip()
-                        o = listByDay(type_day)
-                    else:
-                        exit()
-                while True:
-                    a = int(input("Do you want to filter another time?(0: No/ 1: Yes)?"))
-                    if a == 1:
-                        o = repeatedFilter(o)
-                    else:
-                        break
+
+                o = performSearchByDay()
 
             elif criteria == 8:
-                type_room = input("Type the room: ").strip()
-                o = listByRoom(type_room)
-                while o == {}:
-                    print("No Schedule Matched")
-                    redo = int(input("Input 1 to re-enter room, 0 to exit: "))
-                    if redo == 1:
-                        type_room = input("Type the room: ").strip()
-                        o = listByRoom(type_room)
-                    else:
-                        exit()
-                while True:
-                    a = int(input("Do you want to filter another time(0: NO / 1: YES)? "))
-                    if a == 1:
-                        o = repeatedFilter(o)
-                    else:
-                        break
+
+                o = performSearchByRoom()
 
             if o == {}:
                 print("Sorting unavailable")
@@ -1135,9 +1138,11 @@ if __name__ == "__main__":
                 o = promptSort(o)  # only apply to the after listing task
 
         elif select == 3:
+
             listAllModuleandlecturer()
 
         if select == 1 or select == 2:
+
             promptExportData(o)
 
     # admin functions start.

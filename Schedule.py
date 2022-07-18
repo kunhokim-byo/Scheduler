@@ -1,4 +1,3 @@
-from Location import Location
 class Schedule:
     def __init__(self, date, day, startTime, endTime, planSize, duration, lecturerName, location):
         self.__date = date

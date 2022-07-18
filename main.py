@@ -1,12 +1,13 @@
 import os
 import xlsxwriter
-from inputparser import InputParser
 from datetime import datetime
-from Module import Module
+
 from Moduleoffering import Moduleoffering
+from Module import Module
 from Schedule import Schedule
 from Location import Location
 from Program import Program
+
 from reportlab.lib import colors
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from reportlab.platypus import Paragraph, Spacer
@@ -14,11 +15,12 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.units import cm, inch
 from reportlab.lib.utils import ImageReader
 
-moduleOfferings = [] #list of Moduleoffering objects
-modules = [] #list of Module objects
-schedules = [] #list of Schedule objects
-programs = []   #List of Program objects
-locations = [] #List of Locaton objects
+moduleOfferings = []  # list of Moduleoffering objects
+modules = []  # list of Module objects
+schedules = []  # list of Schedule objects
+locations = []  # List of Locaton objects
+programs = []  # List of Program objects
+
 
 def repeatedFilter(o):
     print("1 List By Lecturer")
@@ -30,7 +32,7 @@ def repeatedFilter(o):
     print("7 List By Module")
     print("8 List By Room")
     b = int(input("Select the list option: "))
-    while b not in [i for i in range(1, 9)]: #Used generator expression
+    while b not in [i for i in range(1, 9)]:  # Used generator expression
         b = int(input("Invalid input. Select the list option again: "))
     if b == 1:
         c = input("Type the lecturer: ").strip()
@@ -58,6 +60,8 @@ def repeatedFilter(o):
     elif b == 8:
         c = input("Type the room: ").strip()
         return listByRoom(c, o)
+
+
 # { }
 # 1. Moo1 S1
 # { Moo1: [S1] }
@@ -67,16 +71,18 @@ def repeatedFilter(o):
 
 def listAllSchedule():
     out = {}
-    for moo in moduleOfferings: # moo = object of moduleOffering
-        for s in moo.getSchedules(): #moo.getSchedules() = get list of Schedule objects inside of moo object
-            print(moo.toString() + moo.getModule().toString() + s.toString() + str(moo.getModule().getPrograms())[1:-1]) # remove curly bracket
+    for moo in moduleOfferings:  # moo = object of moduleOffering
+        for s in moo.getSchedules():  # moo.getSchedules() = get list of Schedule objects inside of moo object
+            print(moo.toString() + moo.getModule().toString() + s.toString() + str(moo.getModule().getPrograms())[
+                                                                               1:-1])  # remove curly bracket
             if moo in out:
-                out[moo].append(s)  #if moo already exist in out, append only schedule.
+                out[moo].append(s)  # if moo already exist in out, append only schedule.
             else:
-                out[moo] = [s]  #if moo not exist, append both.
+                out[moo] = [s]  # if moo not exist, append both.
     return out
 
-def listAllModuleandlecturer(): # to show the list of psb modules and psb lecturers to user
+
+def listAllModuleandlecturer():  # to show the list of psb modules and psb lecturers to user
     i = 0
     k = 0
     print("[PSB Modules]")
@@ -92,14 +98,17 @@ def listAllModuleandlecturer(): # to show the list of psb modules and psb lectur
         k = k + 1
         print(k, " " + d)
 
+
 def listByModule(name, str_schedules=None):
-    if str_schedules == None: # Apply only one filter/ first filter
+    if str_schedules == None:  # Apply only one filter/ first filter
         out = {}
         for moo in moduleOfferings:
             if moo.getModule().getModuleCode() == name:
                 for s in moo.getSchedules():
                     # If module name == name, then print/append to output list
-                    print(moo.toString() + moo.getModule().toString() + s.toString() + str(moo.getModule().getPrograms())[1:-1]) #remove bracket
+                    print(
+                        moo.toString() + moo.getModule().toString() + s.toString() + str(moo.getModule().getPrograms())[
+                                                                                     1:-1])  # remove bracket
                     if moo in out:
                         out[moo].append(s)
                     else:
@@ -107,17 +116,20 @@ def listByModule(name, str_schedules=None):
 
         return out
 
-    else: # if str_schedules is not None, Apply second filter
+    else:  # if str_schedules is not None, Apply second filter
         out = {}
-        for moo, schedule_list in str_schedules.items(): #str_schedules = {moo1 : S1, moo2 : S2, moo3 : S3 ...}
+        for moo, schedule_list in str_schedules.items():  # str_schedules = {moo1 : S1, moo2 : S2, moo3 : S3 ...}
             if moo.getModule().getModuleCode() == name:
                 for s in schedule_list:
-                    print(moo.toString() + moo.getModule().toString() + s.toString() + str(moo.getModule().getPrograms())[1:-1])
+                    print(
+                        moo.toString() + moo.getModule().toString() + s.toString() + str(moo.getModule().getPrograms())[
+                                                                                     1:-1])
                     if moo in out:
                         out[moo].append(s)
                     else:
                         out[moo] = [s]
         return out
+
 
 def listByLecturer(name, str_schedules=None):
     if str_schedules == None:
@@ -125,7 +137,9 @@ def listByLecturer(name, str_schedules=None):
         for moo in moduleOfferings:
             for s in moo.getSchedules():
                 if s.getLecturerName() == name:
-                    print(moo.toString() + moo.getModule().toString() + s.toString() + str(moo.getModule().getPrograms())[1:-1])
+                    print(
+                        moo.toString() + moo.getModule().toString() + s.toString() + str(moo.getModule().getPrograms())[
+                                                                                     1:-1])
                     if moo in out:
                         out[moo].append(s)
                     else:
@@ -136,7 +150,9 @@ def listByLecturer(name, str_schedules=None):
         for moo, schedule_list in str_schedules.items():
             for s in schedule_list:
                 if s.getLecturerName() == name:
-                    print(moo.toString() + moo.getModule().toString() + s.toString() + str(moo.getModule().getPrograms())[1:-1])
+                    print(
+                        moo.toString() + moo.getModule().toString() + s.toString() + str(moo.getModule().getPrograms())[
+                                                                                     1:-1])
                     if moo in out:
                         out[moo].append(s)
                     else:
@@ -144,13 +160,15 @@ def listByLecturer(name, str_schedules=None):
         return out
 
 
-def listByLocation(location, str_schedules = None):
+def listByLocation(location, str_schedules=None):
     if str_schedules == None:
         out = {}
         for moo in moduleOfferings:
             for s in moo.getSchedules():
                 if s.getLocation().getZone() == location:
-                    print(moo.toString() + moo.getModule().toString() + s.toString() + str(moo.getModule().getPrograms())[1:-1])
+                    print(
+                        moo.toString() + moo.getModule().toString() + s.toString() + str(moo.getModule().getPrograms())[
+                                                                                     1:-1])
                     if moo in out:
                         out[moo].append(s)
                     else:
@@ -161,19 +179,25 @@ def listByLocation(location, str_schedules = None):
         for moo, schedule_list in str_schedules.items():
             for s in schedule_list:
                 if s.getLocation().getZone() == location:
-                    print(moo.toString() + moo.getModule().toString() + s.toString() + str(moo.getModule().getPrograms())[1:-1])
+                    print(
+                        moo.toString() + moo.getModule().toString() + s.toString() + str(moo.getModule().getPrograms())[
+                                                                                     1:-1])
                     if moo in out:
                         out[moo].append(s)
                     else:
                         out[moo] = [s]
         return out
-def listByRoom(room, str_schedules = None):
+
+
+def listByRoom(room, str_schedules=None):
     if str_schedules == None:
         out = {}
         for moo in moduleOfferings:
             for s in moo.getSchedules():
                 if s.getLocation().getRoom() == room:
-                    print(moo.toString() + moo.getModule().toString() + s.toString() + str(moo.getModule().getPrograms())[1:-1])
+                    print(
+                        moo.toString() + moo.getModule().toString() + s.toString() + str(moo.getModule().getPrograms())[
+                                                                                     1:-1])
                     if moo in out:
                         out[moo].append(s)
                     else:
@@ -184,7 +208,9 @@ def listByRoom(room, str_schedules = None):
         for moo, schedule_list in str_schedules.items():
             for s in schedule_list:
                 if s.getLocation().getRoom() == room:
-                    print(moo.toString() + moo.getModule().toString() + s.toString() + str(moo.getModule().getPrograms())[1:-1])
+                    print(
+                        moo.toString() + moo.getModule().toString() + s.toString() + str(moo.getModule().getPrograms())[
+                                                                                     1:-1])
                     if moo in out:
                         out[moo].append(s)
                     else:
@@ -198,7 +224,9 @@ def listByDate(date, str_schedules=None):
         for moo in moduleOfferings:
             for s in moo.getSchedules():
                 if s.getDate() == date:
-                    print(moo.toString() + moo.getModule().toString() + s.toString() + str(moo.getModule().getPrograms())[1:-1])
+                    print(
+                        moo.toString() + moo.getModule().toString() + s.toString() + str(moo.getModule().getPrograms())[
+                                                                                     1:-1])
                     if moo in out:
                         out[moo].append(s)
                     else:
@@ -209,8 +237,11 @@ def listByDate(date, str_schedules=None):
         for moo, schedule_list in str_schedules.items():
             for s in schedule_list:
                 if s.getDate() == date:
-                    print(moo.toString() + moo.getModule().toString() + s.toString() + str(moo.getModule().getPrograms())[1:-1])
+                    print(
+                        moo.toString() + moo.getModule().toString() + s.toString() + str(moo.getModule().getPrograms())[
+                                                                                     1:-1])
         return out
+
 
 def listByDateRange(start, end, str_schedules=None):
     if str_schedules == None:
@@ -220,8 +251,11 @@ def listByDateRange(start, end, str_schedules=None):
                 format = '%d/%m/%Y'
                 start_dt = datetime.strptime(start, format)
                 end_dt = datetime.strptime(end, format)
-                if datetime.strptime(s.getDate(), format) >= start_dt and datetime.strptime(s.getDate(), format) <= end_dt:
-                    print(moo.toString() + moo.getModule().toString() + s.toString() + str(moo.getModule().getPrograms())[1:-1])
+                if datetime.strptime(s.getDate(), format) >= start_dt and datetime.strptime(s.getDate(),
+                                                                                            format) <= end_dt:
+                    print(
+                        moo.toString() + moo.getModule().toString() + s.toString() + str(moo.getModule().getPrograms())[
+                                                                                     1:-1])
                     if moo in out:
                         out[moo].append(s)
                     else:
@@ -234,8 +268,11 @@ def listByDateRange(start, end, str_schedules=None):
                 format = '%d/%m/%Y'
                 start_dt = datetime.strptime(start, format)
                 end_dt = datetime.strptime(end, format)
-                if datetime.strptime(s.getDate(), format) >= start_dt and datetime.strptime(s.getDate(), format) <= end_dt:
-                    print(moo.toString() + moo.getModule().toString() + s.toString() + str(moo.getModule().getPrograms())[1:-1])
+                if datetime.strptime(s.getDate(), format) >= start_dt and datetime.strptime(s.getDate(),
+                                                                                            format) <= end_dt:
+                    print(
+                        moo.toString() + moo.getModule().toString() + s.toString() + str(moo.getModule().getPrograms())[
+                                                                                     1:-1])
                     if moo in out:
                         out[moo].append(s)
                     else:
@@ -251,7 +288,9 @@ def listByTimeRange(start, end, str_schedules=None):
                 a = s.getStartTime()
                 c = s.getEndTime()
                 if a >= start and c <= end:
-                    print(moo.toString() + moo.getModule().toString() + s.toString() + str(moo.getModule().getPrograms())[1:-1])
+                    print(
+                        moo.toString() + moo.getModule().toString() + s.toString() + str(moo.getModule().getPrograms())[
+                                                                                     1:-1])
                     if moo in out:
                         out[moo].append(s)
                     else:
@@ -264,21 +303,26 @@ def listByTimeRange(start, end, str_schedules=None):
                 a = s.getStartTime()
                 c = s.getEndTime()
                 if a >= start and c <= end:
-                    print(moo.toString() + moo.getModule().toString() + s.toString() + str(moo.getModule().getPrograms())[1:-1])
+                    print(
+                        moo.toString() + moo.getModule().toString() + s.toString() + str(moo.getModule().getPrograms())[
+                                                                                     1:-1])
                     if moo in out:
                         out[moo].append(s)
                     else:
                         out[moo] = [s]
         return out
 
+
 def listByDay(day, str_schedules=None):
     if str_schedules == None:
         out = {}
         for moo in moduleOfferings:
             for s in moo.getSchedules():
-                day_short = s.getDay()[0:3] # To allow user to type abbreviation of days(e.g. Monday = Mon)
+                day_short = s.getDay()[0:3]  # To allow user to type abbreviation of days(e.g. Monday = Mon)
                 if day_short == day:
-                    print(moo.toString() + moo.getModule().toString() + s.toString() + str(moo.getModule().getPrograms())[1:-1])
+                    print(
+                        moo.toString() + moo.getModule().toString() + s.toString() + str(moo.getModule().getPrograms())[
+                                                                                     1:-1])
                     if moo in out:
                         out[moo].append(s)
                     else:
@@ -290,7 +334,9 @@ def listByDay(day, str_schedules=None):
             for s in schedule_list:
                 day_short = s.getDay()[0:3]
                 if day_short == day:
-                    print(moo.toString() + moo.getModule().toString() + s.toString() + str(moo.getModule().getPrograms())[1:-1])
+                    print(
+                        moo.toString() + moo.getModule().toString() + s.toString() + str(moo.getModule().getPrograms())[
+                                                                                     1:-1])
                     if moo in out:
                         out[moo].append(s)
                     else:
@@ -311,14 +357,14 @@ def deleteSchedule(fields):
     for moo in moduleOfferings:
         if moo.getIntakeCode() == fields[1] and moo.getModule().getModuleCode() == fields[0]:
             for schedule in moo.getSchedules():
-                if str(schedule.getDate()) == str(fields[2]) and schedule.getStartTime() == fields[3] and schedule.getLecturerName() == fields[4]:
+                if str(schedule.getDate()) == str(fields[2]) and schedule.getStartTime() == fields[
+                    3] and schedule.getLecturerName() == fields[4]:
                     moo.delteSchedule(schedule)
                     print("Schedule is deleted")
                     print("Deleted Schedule Detail: ", schedule)
                     print(moo.getSchedules())
                     return
     print("Invalid schedule")
-
 
 
 def findlocation(zone, room):
@@ -339,12 +385,15 @@ def createSchedule(attributes):
     attributes[4] = "/".join(to)
 
     for moo in moduleOfferings:
-        if moo.getIntakeCode() == attributes[0] and moo.getModule().getModuleCode() == attributes[1] and moo.getStudyMode() == attributes[2] and str(moo.getModule().getPrograms()[0].getProgramCode()) == attributes[3]:
+        if moo.getIntakeCode() == attributes[0] and moo.getModule().getModuleCode() == attributes[
+            1] and moo.getStudyMode() == attributes[2] and str(moo.getModule().getPrograms()[0].getProgramCode()) == \
+                attributes[3]:
             loca = findlocation(attributes[11], attributes[12])
-            if not loca: #if Location object is not exists, make new Location object and append it to the locations list. This is for preventing from duplication.
+            if not loca:  # if Location object is not exists, make new Location object and append it to the locations list. This is for preventing from duplication.
                 loca = Location(attributes[11], attributes[12])
                 locations.append(loca)
-            new = Schedule(str(attributes[4]), attributes[5], attributes[6], attributes[7], str(attributes[8]), str(attributes[9]), attributes[10], loca)
+            new = Schedule(str(attributes[4]), attributes[5], attributes[6], attributes[7], str(attributes[8]),
+                           str(attributes[9]), attributes[10], loca)
             moo.addSchedule(new)
             print("Scheduled is added successfully")
             print(moo.getSchedules())
@@ -352,13 +401,12 @@ def createSchedule(attributes):
     print("Invalid")
 
 
-
-
 def updateSchedule(update):
     for moo in moduleOfferings:
         # for update the schedule, program has to find one exact schedule to update the schedule. To find the exact schedule, it has to check if the schedule is exist in ModuleOffering.
-        if moo.getIntakeCode() == update[0] and moo.getModule().getModuleCode() == update[1] and moo.getStudyMode() == update[2] and moo.getModule().getPrograms()[0].getProgramCode() == update[3]:
-            #find the date and start time of the schedule that will be updated. Start time need to be checked because there are schedules that same module in the same day.
+        if moo.getIntakeCode() == update[0] and moo.getModule().getModuleCode() == update[1] and moo.getStudyMode() == \
+                update[2] and moo.getModule().getPrograms()[0].getProgramCode() == update[3]:
+            # find the date and start time of the schedule that will be updated. Start time need to be checked because there are schedules that same module in the same day.
             user2 = input("Type the date for finding specific schedule(dd/mm/year): ").strip()
             user3 = input("Type the start time for finding specific schedule(hhmm): ").strip()
             for s in moo.getSchedules():
@@ -417,23 +465,26 @@ def updateSchedule(update):
     print('No matching schedule is identified!')
 
 
-
-
 def locationExists(location, lecture_room):
     for loca in locations:
         if loca.getZone() == location and loca.getRoom() == lecture_room:
             return True
     return False
+
+
 def programExists(program_code):
     for program in programs:
         if program.getProgramCode() == program_code:
             return True
     return False
+
+
 def moduleExists(module_code):
     for module in modules:
         if module.getModuleCode() == module_code:
             return True
     return False
+
 
 def getModule(module_code):
     for module in modules:
@@ -441,23 +492,26 @@ def getModule(module_code):
             return module
     return None
 
+
 def getProgram(program_code):
     for program in programs:
         if program.getProgramCode() == program_code:
             return program
     return None
 
+
 def getLocation(location, lecture_room):
     for loca in locations:
         if loca.getZone() == location and loca.getRoom() == lecture_room:
             return loca
+
 
 def promptSort(schedules):
     user = int(input("Do you want to sort the schedule(0: NO / 1: YES)? "))
     while user not in [i for i in range(0, 2)]:
         user = int(input("Invalid input, Type again: "))
     if user == 0:
-        out = [] # use list for making excel cuz excel needs list, not dict.
+        out = []  # use list for making excel cuz excel needs list, not dict.
         for moo, ss in schedules.items():
             for s in ss:
                 out.append([moo, s])
@@ -479,39 +533,40 @@ def promptSort(schedules):
         print("14 Program Code")
         print("15 Program Name")
         selectsort = int(input("Select the field to sort: "))
-        schedules = sort(schedules, selectsort)   # return sort(schedules)
+        schedules = sort(schedules, selectsort)  # return sort(schedules)
         printSortResults(schedules)
         user = int(input("Do you want to sort again(0: NO / 1: YES)? "))
         if user == 0:
             return schedules
 
 
-
 def printSortResults(l):
     for items in l:
         print(items[0], items[0].getModule(), items[0].getModule().getPrograms(), items[1])
+
 
 # Moo1: [S1, S2, S3]
 # [[Moo0, S1], [Moo1, S2], ...]
 
 def sort(schedules, field):
     out = []
-    if isinstance(schedules,dict):
+    if isinstance(schedules, dict):
         for moo, ss in schedules.items():
             for s in ss:
-                out.append([moo,s])
+                out.append([moo, s])
     else:
         out = schedules
     mergeSort(out, field)
     return out
 
- # Convert dictionary to List of List of Moo and S
-    # for moo, ss in schedules.items():
-    #     for s in ss:
-    #         out.append([moo, s])
-    # Perform Merge Sort
 
-def isLessThan(e1, e2, field): # Comparison operator for each field.
+# Convert dictionary to List of List of Moo and S
+# for moo, ss in schedules.items():
+#     for s in ss:
+#         out.append([moo, s])
+# Perform Merge Sort
+
+def isLessThan(e1, e2, field):  # Comparison operator for each field.
 
     if field == 1:
         return e1[0].getIntakeCode() <= e2[0].getIntakeCode()
@@ -525,7 +580,7 @@ def isLessThan(e1, e2, field): # Comparison operator for each field.
 
         return date1 < date2
 
-    elif field == 6: # use day_mapper to sort the days in Monday to Friday order, not sort by length of string.
+    elif field == 6:  # use day_mapper to sort the days in Monday to Friday order, not sort by length of string.
         day_mapper = {
             'Monday': 0,
             'Tuesday': 1,
@@ -555,6 +610,7 @@ def isLessThan(e1, e2, field): # Comparison operator for each field.
     elif field == 15:
         pass
 
+
 def formatDateForSorting(date):
     tokens = date.split('/')
     l = []
@@ -568,38 +624,29 @@ def formatDateForSorting(date):
 
 
 def mergeSort(arr, field):
-
     if len(arr) > 1:
 
-
-        mid = len(arr)//2
-
+        mid = len(arr) // 2
 
         L = arr[:mid]
 
-
         R = arr[mid:]
-
 
         mergeSort(L, field)
 
-
         mergeSort(R, field)
-
 
         i = j = k = 0
 
-
         while i < len(L) and j < len(R):
 
-            if isLessThan(L[i], R[j], field): #L[i] < R[j]:
+            if isLessThan(L[i], R[j], field):  # L[i] < R[j]:
                 arr[k] = L[i]
                 i += 1
             else:
                 arr[k] = R[j]
                 j += 1
             k += 1
-
 
         while i < len(L):
             arr[k] = L[i]
@@ -636,6 +683,8 @@ def promptExportData(data):
         print("PDF, Exel are generated")
         exportExcel(output)
         exportPDF(output)
+
+
 def exportPDF(data):
     output = data
 
@@ -645,15 +694,14 @@ def exportPDF(data):
             for s in ss:
                 output.append([moo, s])
 
-
-    doc = SimpleDocTemplate("simple_table.pdf", pagesize=(18*inch, 11*inch))
+    doc = SimpleDocTemplate("simple_table.pdf", pagesize=(18 * inch, 11 * inch))
     # set title
     styles = getSampleStyleSheet()
     # set logo
     logo = ImageReader('logo.png')
 
     modCodeandName = set()
-    for m in output: #output = [[moo,s], [], []...] m = [moo,s]
+    for m in output:  # output = [[moo,s], [], []...] m = [moo,s]
         a = (m[0].getModule().getModuleCode(), m[0].getModule().getModuleName())
         modCodeandName.add(a)
     ProCode = set()
@@ -691,7 +739,6 @@ def exportPDF(data):
             canvas.drawString(63, col, str(k).replace("'", ''))
             col -= 20
 
-
     parsedData = []
     headers = ["Intake Code", "Study Mode", "Module Code", "Date", "Day", "Start Time", "End Time",
                "Plan Size", "Lecturer", "Room", "Zone", "Program Code"]
@@ -705,7 +752,7 @@ def exportPDF(data):
                 ]
         parsedData.append(line)
 
-    table = Table(parsedData, rowHeights=0.3*inch)
+    table = Table(parsedData, rowHeights=0.3 * inch)
     table.setStyle(TableStyle([('BACKGROUND', (0, 1), (-1, -1), colors.aqua),
                                ('BACKGROUND', (0, 0), (-1, 0), colors.green),
                                ('BACKGROUND', (0, 1), (0, -1), colors.rosybrown),
@@ -735,6 +782,7 @@ def exportPDF(data):
     # write the document to disk
     doc.build(elements, onFirstPage=onFirstPage)
 
+
 # [ [moo1, s1], [moo1, s2], [moo2, s3] ]
 def exportExcel(data):
     workbook = xlsxwriter.Workbook('Timetable.xlsx')
@@ -748,8 +796,10 @@ def exportExcel(data):
     linecount = 1
     for moo, s in data:
         line = [linecount, moo.getIntakeCode(), moo.getStudyMode(), moo.getModule().getModuleName(),
-                moo.getModule().getModuleCode(), s.getDate(), s.getDay(), s.getStartTime(), s.getEndTime(), s.getPlanSize(), s.getDuration(), s.getLecturerName(),
-                s.getLocation().getRoom(), s.getLocation().getZone(), moo.getModule().getPrograms()[0].getProgramCode(), moo.getModule().getPrograms()[0].getProgramName()]
+                moo.getModule().getModuleCode(), s.getDate(), s.getDay(), s.getStartTime(), s.getEndTime(),
+                s.getPlanSize(), s.getDuration(), s.getLecturerName(),
+                s.getLocation().getRoom(), s.getLocation().getZone(), moo.getModule().getPrograms()[0].getProgramCode(),
+                moo.getModule().getPrograms()[0].getProgramName()]
         parsedData.append(line)
         linecount += 1
 
@@ -768,6 +818,7 @@ def exportExcel(data):
     workbook.close()
 
 
+
 if __name__ == "__main__":
     program_mapper = {
         'DICT-DNDFC': 'Diploma in InfoComm Technology & Diploma in Network Defense and Forensic Countermeasures'
@@ -780,6 +831,7 @@ if __name__ == "__main__":
         usertype = int(input("Invalid input. Select user type again: "))
 
     # Read and process data
+    # Get Current Directory
     cwd = os.getcwd()
     while True:
         folder = input("Type the folder:").strip()
@@ -793,25 +845,37 @@ if __name__ == "__main__":
         isFirstLine = True
         for line in f.readlines()[1:]:
             colum = line.split(",")[1:]
+
             name = colum[0]
             name = name.split('_')
-            program_code = name[0].strip()
-            intake_code = name[1].strip()
-            study_mode = name[2].strip()
-            module_code = name[3]
-            module_name = colum[1]
+            # DICT-DNDFC  _  120  _  FT  _  DDMG  _  Lec01
+            program_code = name[0].strip() # DICT-DNDFC
+            intake_code = name[1].strip() # 120
+            study_mode = name[2].strip() # FT
+            module_code = name[3] # DDMG
+
+            module_name = colum[1] #
+
             date = colum[2]
+
             day = colum[3]
+
             start_time = colum[4]
+
             end_time = colum[5]
+
             duration = colum[6]
+
             lecture_room = colum[7].strip()
+
             size = colum[8]
+
             lecturer = colum[9]
+
             location = colum[10].strip()
 
             # Create ModuleOffering object only when reading first line
-            if isFirstLine: #elements which are okay to get info from only from first line of csv file = program name/code, module name/code
+            if isFirstLine:  # elements which are okay to get info from only from first line of csv file = program name/code, module name/code
                 # Check if Program object exists with program_code
                 if not programExists(program_code):
                     p = Program(program_code, program_mapper[program_code])
@@ -824,7 +888,7 @@ if __name__ == "__main__":
                 # Create new moduleoffering object
                 mo = Moduleoffering(intake_code, study_mode, found)
                 moduleOfferings.append(mo)
-                isFirstLine = False #Q
+                isFirstLine = False  # Q
 
                 found = getModule(module_code)  # module object is found here
                 # check if program object exists in the program list of the Module object with module_code
@@ -838,7 +902,7 @@ if __name__ == "__main__":
                     found.addProgram(p)
 
                 # check if module object exists in the module list of the program object with program_code
-                found2 = getProgram(program_code) #program object is found
+                found2 = getProgram(program_code)  # program object is found
                 moduleAlreadyExists = False
                 for m in found2.getModules():
                     if m.getModuleCode() == module_code:
@@ -854,10 +918,11 @@ if __name__ == "__main__":
                 l = Location(location, lecture_room)
                 locations.append(l)
 
-            s = Schedule(date, day, start_time, end_time, size, duration, lecturer, l) #schedule objects cannot be duplicate, don't have to check if it's exist.
+            s = Schedule(date, day, start_time, end_time, size, duration, lecturer,
+                         l)  # schedule objects cannot be duplicate, don't have to check if it's exist.
             schedules.append(s)
             for moo in moduleOfferings:
-                if moo.getIntakeCode() == intake_code and moo.getModule().getModuleCode() == module_code and moo.getStudyMode() == study_mode: #don't have to check if it's exist with same reason in schedule object
+                if moo.getIntakeCode() == intake_code and moo.getModule().getModuleCode() == module_code and moo.getStudyMode() == study_mode:  # don't have to check if it's exist with same reason in schedule object
                     moo.addSchedule(s)
         f.close()
 
@@ -870,7 +935,7 @@ if __name__ == "__main__":
             select = int(input("Invalid input. Select the task again: "))
         if select == 1:
             oo = listAllSchedule()
-            o = [] # [moo1,s1] , [moo1, s2], [moo1, s3] ...[moo2, s1], [moo2, s2] ...
+            o = []  # [moo1,s1] , [moo1, s2], [moo1, s3] ...[moo2, s1], [moo2, s2] ...
             for moo, ss in oo.items():
                 for s in ss:
                     o.append([moo, s])
@@ -895,7 +960,7 @@ if __name__ == "__main__":
                     if redo == 1:
                         type_module = input("Type the module: ").strip()
                         o = listByModule(type_module)
-                    else: # if user does not type 1
+                    else:  # if user does not type 1
                         exit()
                 while True:
                     a = int(input("Do you want to filter another time(0: NO / 1: YES)? "))
@@ -989,8 +1054,10 @@ if __name__ == "__main__":
                     print("No Schedule Matched")
                     redo = int(input("Input 1 to re-enter time range, 0 to exit: "))
                     if redo == 1:
-                        type_trange1 = input("Type the start time(type in 4 digits / e.g. 2pm = 1400 8am = 0800): ").strip()
-                        type_trange2 = input("Type the end time(type in 4 digits / e.g. 2pm = 1400 8am = 0800): ").strip()
+                        type_trange1 = input(
+                            "Type the start time(type in 4 digits / e.g. 2pm = 1400 8am = 0800): ").strip()
+                        type_trange2 = input(
+                            "Type the end time(type in 4 digits / e.g. 2pm = 1400 8am = 0800): ").strip()
                         o = listByTimeRange(type_trange1, type_trange2)
                     else:
                         exit()
@@ -1013,7 +1080,7 @@ if __name__ == "__main__":
                     else:
                         exit()
                 while True:
-                    a = int(input("Do you want to filter another time?(0: No/ 1: Yes)?" ))
+                    a = int(input("Do you want to filter another time?(0: No/ 1: Yes)?"))
                     if a == 1:
                         o = repeatedFilter(o)
                     else:
@@ -1036,10 +1103,11 @@ if __name__ == "__main__":
                         o = repeatedFilter(o)
                     else:
                         break
+
             if o == {}:
                 print("Sorting unavailable")
             else:
-                o = promptSort(o) #only apply to the after listing task
+                o = promptSort(o)  # only apply to the after listing task
 
         elif select == 3:
             listAllModuleandlecturer()
@@ -1061,7 +1129,7 @@ if __name__ == "__main__":
             userinput = []
             for update in updates:
                 a = input("Type " + update + ":").strip()
-                userinput.append(a) # user input from updates list will be append to userinput list
+                userinput.append(a)  # user input from updates list will be append to userinput list
             updateSchedule(userinput)
         elif a == 2:
             fields = ['Module Code', 'Intake Code', 'Date', 'StartTime(hhmm)', 'Lecturer']
@@ -1069,23 +1137,15 @@ if __name__ == "__main__":
             for field in fields:
                 f = input("Type the " + field + ":").strip()
                 userinput.append(f)
-            #userinput example = ['DCNG', '221', '29/04/2021', '1200', 'Dr Liau Vui Kien']
+            # userinput example = ['DCNG', '221', '29/04/2021', '1200', 'Dr Liau Vui Kien']
             deleteSchedule(userinput)
 
 
         elif a == 3:
-            attributes = ['Intake Code', 'Module Code', 'Study Mode', 'Program Code', 'Date', 'Day', 'Start Time', 'End Time','Plan Size', 'Duration', 'Lecturer', 'zone', 'room']
+            attributes = ['Intake Code', 'Module Code', 'Study Mode', 'Program Code', 'Date', 'Day', 'Start Time',
+                          'End Time', 'Plan Size', 'Duration', 'Lecturer', 'zone', 'room']
             userinput = []
             for attribute in attributes:
                 a = input("Type " + attribute + ":").strip()
                 userinput.append(a)
             createSchedule(userinput)
-
-
-
-
-
-
-
-
-

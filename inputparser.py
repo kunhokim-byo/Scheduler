@@ -1,3 +1,6 @@
+import os
+
+
 class InputParser:
     def start(self):
         self.promptUserType()
@@ -8,5 +11,5 @@ class InputParser:
     def promptData(self):
         pass
 
-    def readcsvFiles(files):
+    def readcsvFiles(self):
         pass

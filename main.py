@@ -828,6 +828,9 @@ def selectUser():
     return usertype
 
 def findAndProcessData():
+    program_mapper = {
+        'DICT-DNDFC': 'Diploma in InfoComm Technology & Diploma in Network Defense and Forensic Countermeasures'
+    }
     cwd = os.getcwd()
     while True:
         folder = input("Type the folder:").strip()
@@ -1114,12 +1117,7 @@ def performInsertSchedule():
         a = input("Type " + attribute + ":").strip()
         userinput.append(a)
     createSchedule(userinput)
-
-if __name__ == "__main__":
-    program_mapper = {
-        'DICT-DNDFC': 'Diploma in InfoComm Technology & Diploma in Network Defense and Forensic Countermeasures'
-    }
-
+def main():
     usertype = selectUser()
 
     findAndProcessData()
@@ -1197,3 +1195,5 @@ if __name__ == "__main__":
         elif a == 3:
 
             performInsertSchedule()
+if __name__ == "__main__":
+    main()

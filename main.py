@@ -22,7 +22,7 @@ locations = []  # List of Locaton objects
 programs = []  # List of Program objects
 
 
-def repeatedFilter(o):
+def repeatedFilter(filteredSchedules):
     print("1 List By Lecturer")
     print("2 List By Location")
     print("3 List By Date")
@@ -31,35 +31,35 @@ def repeatedFilter(o):
     print("6 List BY Day")
     print("7 List By Module")
     print("8 List By Room")
-    b = int(input("Select the list option: "))
-    while b not in [i for i in range(1, 9)]:  # Used generator expression
-        b = int(input("Invalid input. Select the list option again: "))
-    if b == 1:
-        c = input("Type the lecturer: ").strip()
-        return listByLecturer(c, o)
-    elif b == 2:
-        c = input("Type the location: ").strip()
-        return listByLocation(c, o)
-    elif b == 3:
-        c = input("Type the Date(dd/mm/year): ").strip()
-        return listByDate(c, o)
-    elif b == 4:
-        c1 = input("Type the start date(dd/mm/year): ").strip()
-        c2 = input("Type the end date(dd/mm/year): ").strip()
-        return listByDateRange(c1, c2, o)
-    elif b == 5:
-        c1 = input("Type the start time(e.g. 8am = 0800, 6pm = 1800): ").strip()
-        c2 = input("Type the end time(e.g. 8am = 0800, 6pm = 1800): ").strip()
-        return listByTimeRange(c1, c2, o)
-    elif b == 6:
-        c = input("Type the day(Mon/Tue/Wed/Thu/Fri/Sat/Sun): ").strip()
-        return listByDay(c, o)
-    elif b == 7:
-        c = input("Type the module code: ").strip()
-        return listByModule(c, o)
-    elif b == 8:
-        c = input("Type the room: ").strip()
-        return listByRoom(c, o)
+    selectedListOption = int(input("Select the list option: "))
+    while selectedListOption not in [i for i in range(1, 9)]:  # Used generator expression
+        selectedListOption = int(input("Invalid input. Select the list option again: "))
+    if selectedListOption == 1:
+        inputValue = input("Type the lecturer: ").strip()
+        return listByLecturer(inputValue, filteredSchedules)
+    elif selectedListOption == 2:
+        inputValue = input("Type the location: ").strip()
+        return listByLocation(inputValue, filteredSchedules)
+    elif selectedListOption == 3:
+        inputValue = input("Type the Date(dd/mm/year): ").strip()
+        return listByDate(inputValue, filteredSchedules)
+    elif selectedListOption == 4:
+        startDate = input("Type the start date(dd/mm/year): ").strip()
+        endDate = input("Type the end date(dd/mm/year): ").strip()
+        return listByDateRange(startDate, endDate, filteredSchedules)
+    elif selectedListOption == 5:
+        startTime = input("Type the start time(e.g. 8am = 0800, 6pm = 1800): ").strip()
+        endTime = input("Type the end time(e.g. 8am = 0800, 6pm = 1800): ").strip()
+        return listByTimeRange(startTime, endTime, filteredSchedules)
+    elif selectedListOption == 6:
+        inputValue = input("Type the day(Mon/Tue/Wed/Thu/Fri/Sat/Sun): ").strip()
+        return listByDay(inputValue, filteredSchedules)
+    elif selectedListOption == 7:
+        inputValue = input("Type the module code: ").strip()
+        return listByModule(inputValue, filteredSchedules)
+    elif selectedListOption == 8:
+        inputValue = input("Type the room: ").strip()
+        return listByRoom(inputValue, filteredSchedules)
 
 
 # { }

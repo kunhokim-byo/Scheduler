@@ -933,12 +933,12 @@ def promptListingOption():
     return select
 
 def performListAllSchedule():
-    oo = listAllSchedule()
-    o = []  # [moo1,s1] , [moo1, s2], [moo1, s3] ...[moo2, s1], [moo2, s2] ...
-    for moo, ss in oo.items():
-        for s in ss:
-            o.append([moo, s])
-    return o
+    moduleOfferingAndSchedules = listAllSchedule()
+    result = []  # [moo1,s1] , [moo1, s2], [moo1, s3] ...[moo2, s1], [moo2, s2] ...
+    for moduleOffering, schedules in moduleOfferingAndSchedules.items():
+        for s in schedules:
+            result.append([moduleOffering, s])
+    return result
 
 def promptSearchCriteria():
     print("1 List By Module")
@@ -956,243 +956,243 @@ def promptSearchCriteria():
 
 def performSearchByModule():
     type_module = input("Type the module code: ").strip()
-    o = listByModule(type_module)
-    while o == {}:  # This is the case that user type the invalid input so that nothing inside of dictionary
+    result = listByModule(type_module)
+    while result == {}:  # This is the case that user type the invalid input so that nothing inside of dictionary
         print("No Schedule Matched")
         redo = int(input("Input 1 to re-enter module code, 0 to exit: "))
         if redo == 1:
             type_module = input("Type the module: ").strip()
-            o = listByModule(type_module)
+            result = listByModule(type_module)
         else:  # if user does not type 1
             exit()
-    o = promptRepeatingSearch(o)
-    return o
+    result = promptRepeatingSearch(result)
+    return result
 
 def performSearchByLecturer():
     type_lecturer = input("Type the lecturer:").strip()
-    o = listByLecturer(type_lecturer)
-    while o == {}:
+    result = listByLecturer(type_lecturer)
+    while result == {}:
         print("No Schedule Matched")
         redo = int(input("Input 1 to re-enter lecturer, 0 to exit: "))
         if redo == 1:
             type_lecturer = input("Type the lecturer: ").strip()
-            o = listByLecturer(type_lecturer)
+            result = listByLecturer(type_lecturer)
         else:
             exit()
-    o = promptRepeatingSearch(o)
-    return o
+    result = promptRepeatingSearch(result)
+    return result
 
 def performSearchByZone():
     type_zone = input("Type the zone: ").strip()
-    o = listByLocation(type_zone)
-    while o == {}:
+    result = listByLocation(type_zone)
+    while result == {}:
         print("No Schedule Matched")
         redo = int(input("Input 1 to re-enter zone, 0 to exit: "))
         if redo == 1:
             type_zone = input("Type the zone: ").strip()
-            o = listByLocation(type_zone)
+            result = listByLocation(type_zone)
         else:
             exit()
-    o = promptRepeatingSearch(o)
-    return o
+    result = promptRepeatingSearch(result)
+    return result
 
 def performSearchByDate():
     type_date = input("type the date(dd/m/year): ").strip()
-    o = listByDate(type_date)
-    while o == {}:
+    result = listByDate(type_date)
+    while result == {}:
         print("No Schedule Matched")
         redo = int(input("Input 1 to re-enter date, 0 to exit: "))
         if redo == 1:
             type_date = input("Type the date: ").strip()
-            o = listByDate(type_date)
+            result = listByDate(type_date)
         else:
             exit()
-    o = promptRepeatingSearch(o)
-    return o
+    result = promptRepeatingSearch(result)
+    return result
 
 def performSearchByDateRange():
-    type_drange1 = input("Type the start date(dd/m/year): ").strip()
-    type_drange2 = input("Type the end date(dd/m/year): ").strip()
-    o = listByDateRange(type_drange1, type_drange2)
-    while o == {}:
+    startDate = input("Type the start date(dd/m/year): ").strip()
+    endDate = input("Type the end date(dd/m/year): ").strip()
+    result = listByDateRange(startDate, endDate)
+    while result == {}:
         print("No Schedule Matched")
         redo = int(input("Input 1 to re-enter date range, 0 to exit: "))
         if redo == 1:
-            type_drange1 = input("Type the start date(dd/m/year): ").strip()
-            type_drange2 = input("Type the end date(dd/m/year): ").strip()
-            o = listByDateRange(type_drange1, type_drange2)
+            startDate = input("Type the start date(dd/m/year): ").strip()
+            endDate = input("Type the end date(dd/m/year): ").strip()
+            result = listByDateRange(startDate, endDate)
         else:
             exit()
-    o = promptRepeatingSearch(o)
-    return o
+    result = promptRepeatingSearch(result)
+    return result
 
 def performSearchByTimeRange():
-    type_trange1 = input("Type the start time(type in 4 digits / e.g. 2pm = 1400 8am = 0800): ").strip()
-    type_trange2 = input("Type the end time(type in 4 digits / e.g. 2pm = 1400 8am = 0800): ").strip()
-    o = listByTimeRange(type_trange1, type_trange2)
-    while o == {}:
+    startTime = input("Type the start time(type in 4 digits / e.g. 2pm = 1400 8am = 0800): ").strip()
+    endTime = input("Type the end time(type in 4 digits / e.g. 2pm = 1400 8am = 0800): ").strip()
+    result = listByTimeRange(startTime, endTime)
+    while result == {}:
         print("No Schedule Matched")
         redo = int(input("Input 1 to re-enter time range, 0 to exit: "))
         if redo == 1:
-            type_trange1 = input(
+            startTime = input(
                 "Type the start time(type in 4 digits / e.g. 2pm = 1400 8am = 0800): ").strip()
-            type_trange2 = input(
+            endTime = input(
                 "Type the end time(type in 4 digits / e.g. 2pm = 1400 8am = 0800): ").strip()
-            o = listByTimeRange(type_trange1, type_trange2)
+            result = listByTimeRange(startTime, endTime)
         else:
             exit()
-    o = promptRepeatingSearch(o)
-    return o
+    result = promptRepeatingSearch(result)
+    return result
 
 def performSearchByDay():
     type_day = input("Type the day(Mon/Tue/Wed/Thu/Fri/Sat/Sun): ")
-    o = listByDay(type_day)
-    while o == {}:
+    result = listByDay(type_day)
+    while result == {}:
         print("No Schedule Matched")
         redo = int(input("Input 1 to re-enter day, 0 to exit: "))
         if redo == 1:
             type_day = input("Type the day: ").strip()
-            o = listByDay(type_day)
+            result = listByDay(type_day)
         else:
             exit()
-    o = promptRepeatingSearch(o)
-    return o
+    result = promptRepeatingSearch(result)
+    return result
 
 def performSearchByRoom():
     type_room = input("Type the room: ").strip()
-    o = listByRoom(type_room)
-    while o == {}:
+    result = listByRoom(type_room)
+    while result == {}:
         print("No Schedule Matched")
         redo = int(input("Input 1 to re-enter room, 0 to exit: "))
         if redo == 1:
             type_room = input("Type the room: ").strip()
-            o = listByRoom(type_room)
+            result = listByRoom(type_room)
         else:
             exit()
-    o = promptRepeatingSearch(o)
-    return o
+    result = promptRepeatingSearch(result)
+    return result
 
-def promptRepeatingSearch(o):
+def promptRepeatingSearch(result):
     while True:
-        a = int(input("Do you want to filter another time(0: NO / 1: YES)? "))
-        while a not in [i for i in range(0, 2)]:
-            a = int(input("Invalid Input. Type again: "))
-        if a == 1:
-            o = repeatedFilter(o)
-        elif a == 0:
+        ask_repeat_filter = int(input("Do you want to filter another time(0: NO / 1: YES)? "))
+        while ask_repeat_filter not in [i for i in range(0, 2)]:
+            ask_repeat_filter = int(input("Invalid Input. Type again: "))
+        if ask_repeat_filter == 1:
+            result = repeatedFilter(result)
+        elif ask_repeat_filter == 0:
             break
-    return o
+    return result
 
 def promptAdminTasksOption():
     print("1 Change Existing Schedule")
     print("2 Delete Schedule Data")
     print("3 Add new Schedule Data")
-    a = int(input("select the task: "))
-    while a not in [i for i in range(1, 4)]:
-        a = int(input("Invalid input. Select the task again: "))
-    return a
+    selectedTask = int(input("select the task: "))
+    while selectedTask not in [i for i in range(1, 4)]:
+        selectedTask = int(input("Invalid input. Select the task again: "))
+    return selectedTask
 
 def performUpdateSchedule():
     updates = ['Intake Code', 'Module Code', 'Study Mode', 'Program Code']
-    userinput = []
+    userInput = []
     for update in updates:
-        a = input("Type " + update + ":").strip()
-        userinput.append(a)  # user input from updates list will be append to userinput list
-    updateSchedule(userinput)
+        inputValue = input("Type " + update + ":").strip()
+        userInput.append(inputValue)  # user input from updates list will be append to userinput list
+    updateSchedule(userInput)
 
 def performDeleteSchedule():
     fields = ['Module Code', 'Intake Code', 'Date', 'StartTime(hhmm)', 'Lecturer']
-    userinput = []
+    userInput = []
     for field in fields:
-        f = input("Type the " + field + ":").strip()
-        userinput.append(f)
+        inputValue = input("Type the " + field + ":").strip()
+        userInput.append(inputValue)
     # userinput example = ['DCNG', '221', '29/04/2021', '1200', 'Dr Liau Vui Kien']
-    deleteSchedule(userinput)
+    deleteSchedule(userInput)
 
 def performInsertSchedule():
     attributes = ['Intake Code', 'Module Code', 'Study Mode', 'Program Code', 'Date', 'Day', 'Start Time',
                   'End Time', 'Plan Size', 'Duration', 'Lecturer', 'zone', 'room']
-    userinput = []
+    userInput = []
     for attribute in attributes:
-        a = input("Type " + attribute + ":").strip()
-        userinput.append(a)
-    createSchedule(userinput)
+        inputValue = input("Type " + attribute + ":").strip()
+        userInput.append(inputValue)
+    createSchedule(userInput)
 def main():
+
     usertype = selectUser()
 
     findAndProcessData()
 
     if usertype == 1:
 
-        select = promptListingOption()
+        selectedOption = promptListingOption()
 
-        if select == 1:
+        if selectedOption == 1:
 
-            o = performListAllSchedule()
+            result = performListAllSchedule()
 
-        elif select == 2:
+        elif selectedOption == 2:
 
             criteria = promptSearchCriteria()
 
             if criteria == 1:
 
-                o = performSearchByModule()
+                result = performSearchByModule()
 
             elif criteria == 2:
 
-                o = performSearchByLecturer()
+                result = performSearchByLecturer()
 
             elif criteria == 3:
 
-                o = performSearchByZone()
+                result = performSearchByZone()
 
             elif criteria == 4:
 
-                o = performSearchByDate()
+                result = performSearchByDate()
 
             elif criteria == 5:
 
-                o = performSearchByDateRange()
+                result = performSearchByDateRange()
 
             elif criteria == 6:
 
-                o = performSearchByTimeRange()
+                result = performSearchByTimeRange()
 
             elif criteria == 7:
 
-                o = performSearchByDay()
+                result = performSearchByDay()
 
             elif criteria == 8:
 
-                o = performSearchByRoom()
+                result = performSearchByRoom()
 
-            if o == {}:
+            if result == {}:
                 print("Sorting unavailable")
             else:
-                o = promptSort(o)  # only apply to the after listing task
+                result = promptSort(result)  # only apply to the after listing task
 
-        elif select == 3:
+        elif selectedOption == 3:
 
             listAllModuleandlecturer()
 
-        if select == 1 or select == 2:
+        if selectedOption == 1 or selectedOption == 2:
 
-            promptExportData(o)
+            promptExportData(result)
 
     # admin functions start.
-
     else:
-        a = promptAdminTasksOption()
+        selectedTask = promptAdminTasksOption()
 
-        if a == 1:
+        if selectedTask == 1:
 
             performUpdateSchedule()
 
-        elif a == 2:
+        elif selectedTask == 2:
 
             performDeleteSchedule()
 
-        elif a == 3:
+        elif selectedTask == 3:
 
             performInsertSchedule()
 if __name__ == "__main__":
